@@ -7,7 +7,8 @@ newline db 0x0A         ;new line 1 byte
 ;------------------
 
 section .bss                  ;Uninitilized data
-
+;need to store a user value
+user_input  resb   4
 section .text                 ;Code section
  global _start
 
@@ -20,17 +21,38 @@ section .text                 ;Code section
  mov edx,lenmsg1              ;How manny bytes to write
  int 80h                      ;interupt for sys call execution
 
+ ;call excepts a return keyword
+ call new_line
+ call read_data
 
- ;change line
- mov eax,4
- mov ebx,1
- mov ecx ,newline
- mov edx,1
- int 80h
+
 
 
 
  ;exit
  mov eax,1
  int 80h
+
+
+
+read_data:
+   mov eax,3
+   mov ebx, 0
+   mov ecx,user_input
+   mov edx,4
+   int 80h
+   ret
+
+new_line:
+;change line
+   mov eax,4
+   mov ebx,1
+   mov ecx ,newline
+   mov edx,1
+   int 80h
+   ret
+
+game_loop_body:
+;this will be a while loop which will 
+
 
